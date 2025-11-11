@@ -1,5 +1,6 @@
 package org.example.giftlist.giftList;
 
+import org.example.giftlist.config.AbstractMongoTest;
 import org.example.giftlist.gift.Gift;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,11 +10,11 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @ActiveProfiles("test")
-public class GiftListRepositoryTests {
+public class GiftListRepositoryTests extends AbstractMongoTest {
 
     @Autowired
     private GiftListRepository giftListRepository;
@@ -24,7 +25,7 @@ public class GiftListRepositoryTests {
     }
 
     @Test
-    void shouldRetrieveListGift_whenIdIsGiven() {
+    void shouldRetrieveGiftList_whenIdIsGiven() {
         // Arrange
         Gift gift = new Gift().gift()
                 .name("truc")
@@ -36,10 +37,15 @@ public class GiftListRepositoryTests {
                 .gifts(List.of(gift))
                 .build();
 
+        GiftList savedList = giftListRepository.save(list);
+
         // Act
-        GiftList saved = giftListRepository.findGiftListById(list.getId());
+        GiftList foundList = giftListRepository.findGiftListById(savedList.getId());
 
         // Assert
+        assertThat(foundList).isNotNull();
+        assertThat(foundList.getName()).isEqualTo("Anniversaire");
+        assertThat(foundList.getGifts()).hasSize(1);
         assertThat(giftListRepository.count()).isEqualTo(1);
     }
 }
