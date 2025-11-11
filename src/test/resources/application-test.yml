@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true
+
+  main:
+    banner-mode: "off"
+
+logging:
+  level:
+    org.springframework.data.mongodb.core: WARN
+    org.mongodb.driver: WARN
