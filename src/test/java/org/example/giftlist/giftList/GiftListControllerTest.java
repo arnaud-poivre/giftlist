@@ -49,10 +49,10 @@ public class GiftListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(giftLists.size()))
                 .andExpect(jsonPath("$[0].name").value("Noel"))
-                .andExpect(jsonPath("$[1].name").value("Anniv"))
                 .andExpect(jsonPath("$[0].gifts[0].name").value("Gift 1"))
                 .andExpect(jsonPath("$[0].gifts[0].price").value(33))
                 .andExpect(jsonPath("$[0].gifts[1].price").value(21))
+                .andExpect(jsonPath("$[1].name").value("Anniv"))
                 .andExpect(jsonPath("$[1].gifts[0].name").value("Gift 1"))
                 .andExpect(jsonPath("$[1].gifts[0].price").value(33));
     }

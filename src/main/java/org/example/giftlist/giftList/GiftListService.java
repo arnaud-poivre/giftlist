@@ -17,5 +17,9 @@ public class GiftListService {
         return giftListRepository.findAll();
     }
 
+    public GiftList getGiftListById(String id) {
+        return giftListRepository.findGiftListById(id);
+    }
+
 
 }

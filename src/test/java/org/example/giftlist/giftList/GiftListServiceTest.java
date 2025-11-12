@@ -32,8 +32,8 @@ class GiftListServiceTest {
         List<GiftList> giftLists = List.of(
                 new GiftList().giftList()
                         .gifts(List.of(new Gift().gift().name("Truc")
-                                .price(23)
-                                .build(),
+                                        .price(23)
+                                        .build(),
                                 new Gift().gift()
                                         .name("Machin")
                                         .price(23)
@@ -41,7 +41,6 @@ class GiftListServiceTest {
                         .name("Noel")
                         .build()
         );
-
         when(giftListRepository.findAll()).thenReturn(giftLists);
 
         // Act
@@ -49,6 +48,30 @@ class GiftListServiceTest {
 
         // Assert
         assertEquals(giftLists.size(), result.size());
+    }
+
+    @Test
+    public void shouldGetGiftListById_whenCorrectIdIsGiven() {
+        // Arrange
+        GiftList giftLists = new GiftList().giftList()
+                .id("6914b6d4efab04099f43878f")
+                .gifts(List.of(new Gift().gift().name("Truc")
+                                .price(23)
+                                .build(),
+                        new Gift().gift()
+                                .name("Machin")
+                                .price(23)
+                                .build()))
+                .name("Noel")
+                .build();
+        when(giftListRepository.findGiftListById("6914b6d4efab04099f43878f")).thenReturn(giftLists);
+
+        // Act
+        GiftList result = giftListService.getGiftListById("6914b6d4efab04099f43878f");
+
+        // Arrange
+        assertEquals(result.getId(), giftLists.getId());
+
     }
 
 }
