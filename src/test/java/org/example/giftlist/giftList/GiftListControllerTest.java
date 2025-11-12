@@ -38,8 +38,8 @@ public class GiftListControllerTest {
                 .price(21)
                 .build();
 
-        List<GiftList> giftLists = List.of(new GiftList().giftList().gifts(List.of(gift, gift2)).build(),
-                new GiftList().giftList().gifts(List.of(gift)).build());
+        List<GiftList> giftLists = List.of(new GiftList().giftList().gifts(List.of(gift, gift2)).name("Noel").build(),
+                new GiftList().giftList().gifts(List.of(gift)).name("Anniv").build());
 
         when(giftListService.getAllGiftList()).thenReturn(giftLists);
 
@@ -47,7 +47,14 @@ public class GiftListControllerTest {
         mockMvc.perform(get("/giftlist")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(giftLists.size()));
+                .andExpect(jsonPath("$.length()").value(giftLists.size()))
+                .andExpect(jsonPath("$[0].name").value("Noel"))
+                .andExpect(jsonPath("$[1].name").value("Anniv"))
+                .andExpect(jsonPath("$[0].gifts[0].name").value("Gift 1"))
+                .andExpect(jsonPath("$[0].gifts[0].price").value(33))
+                .andExpect(jsonPath("$[0].gifts[1].price").value(21))
+                .andExpect(jsonPath("$[1].gifts[0].name").value("Gift 1"))
+                .andExpect(jsonPath("$[1].gifts[0].price").value(33));
     }
 
 

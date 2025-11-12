@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
 @ActiveProfiles("test")
-public class GiftListRepositoryTests extends AbstractMongoTest {
+public class GiftListRepositoryTest extends AbstractMongoTest {
 
     @Autowired
     private GiftListRepository giftListRepository;
