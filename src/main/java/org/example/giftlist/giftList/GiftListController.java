@@ -24,6 +24,4 @@ public class GiftListController {
     public ResponseEntity<GiftList> getGiftListById(@PathVariable String id) {
         return ResponseEntity.ok(giftListService.getGiftListById(id));
     }
-
-
 }
