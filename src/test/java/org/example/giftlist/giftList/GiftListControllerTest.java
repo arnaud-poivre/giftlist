@@ -12,8 +12,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(GiftListController.class)
 public class GiftListControllerTest {
@@ -57,5 +56,38 @@ public class GiftListControllerTest {
                 .andExpect(jsonPath("$[1].gifts[0].price").value(33));
     }
 
+    @Test
+    void shouldReturnGiftListById_whenIdExists() throws Exception {
+        // Arrange
+        String giftListId = "6914b6d4efab04099f43878f";
 
+        Gift gift1 = new Gift().gift()
+                .name("Gift 1")
+                .price(33)
+                .build();
+
+        Gift gift2 = new Gift().gift()
+                .name("Gift 2")
+                .price(21)
+                .build();
+
+        GiftList giftList = new GiftList().giftList()
+                .id(giftListId)
+                .name("Noel")
+                .gifts(List.of(gift1, gift2))
+                .build();
+
+        when(giftListService.getGiftListById(giftListId)).thenReturn(giftList);
+
+        // Act & Assert
+        mockMvc.perform(get("/giftlist/{id}", giftListId).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(giftListId))
+                .andExpect(jsonPath("$.name").value("Noel"))
+                .andExpect(jsonPath("$.gifts[0].name").value("Gift 1"))
+                .andExpect(jsonPath("$.gifts[0].price").value(33))
+                .andExpect(jsonPath("$.gifts[1].name").value("Gift 2"))
+                .andExpect(jsonPath("$.gifts[1].price").value(21));
+    }
 }
