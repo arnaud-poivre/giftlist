@@ -1,4 +1,4 @@
-package org.example.giftlist.giftList;
+package org.example.giftlist.giftlist;
 
 import org.example.giftlist.config.AbstractMongoTest;
 import org.example.giftlist.gift.Gift;

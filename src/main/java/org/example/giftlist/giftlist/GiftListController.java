@@ -1,4 +1,4 @@
-package org.example.giftlist.giftList;
+package org.example.giftlist.giftlist;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
