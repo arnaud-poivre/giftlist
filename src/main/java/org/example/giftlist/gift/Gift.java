@@ -1,5 +1,7 @@
 package org.example.giftlist.gift;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 @Getter

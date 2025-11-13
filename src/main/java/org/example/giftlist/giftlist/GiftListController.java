@@ -1,5 +1,7 @@
 package org.example.giftlist.giftlist;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,4 +32,12 @@ public class GiftListController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping
+    public ResponseEntity<GiftList> createGiftList(@RequestBody GiftList giftList) {
+        GiftList created = giftListService.createGiftList(giftList);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+
 }

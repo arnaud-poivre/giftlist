@@ -3,21 +3,33 @@ package org.example.giftlist.giftlist;
 import org.example.giftlist.gift.Gift;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(GiftListController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class GiftListControllerTest {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
@@ -111,5 +123,31 @@ public class GiftListControllerTest {
         mockMvc.perform(get("/giftlist/unknown")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldCreateGiftList() throws Exception {
+        // Arrange
+        GiftList newGiftList = new GiftList().giftList()
+                .id("6914b6d4efab04099f43878f")
+                .gifts(List.of(
+                        new Gift().gift().name("Gift 1").price(33).build(),
+                        new Gift().gift().name("Gift 2").price(21).build()
+                ))
+                .name("Noel")
+                .build();
+
+        when(giftListService.createGiftList(any(GiftList.class))).thenReturn(newGiftList);
+
+        // Act && Arrange
+        mockMvc.perform(post("/giftlist")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newGiftList)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value("6914b6d4efab04099f43878f"))
+                .andExpect(jsonPath("$.name").value("Noel"))
+                .andExpect(jsonPath("$.gifts.length()").value(2));
+
     }
 }

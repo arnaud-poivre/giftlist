@@ -22,5 +22,8 @@ public class GiftListService {
         return giftListRepository.findGiftListById(id);
     }
 
+    public GiftList createGiftList(GiftList giftList) {
+        return giftListRepository.save(giftList);
+    }
 
 }

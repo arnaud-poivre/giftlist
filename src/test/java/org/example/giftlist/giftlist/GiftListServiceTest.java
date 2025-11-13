@@ -12,7 +12,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +51,7 @@ class GiftListServiceTest {
     }
 
     @Test
-    public void shouldGetGiftListById_whenCorrectIdIsGiven() {
+    void shouldGetGiftListById_whenCorrectIdIsGiven() {
         // Arrange
         GiftList giftLists = new GiftList().giftList()
                 .id("6914b6d4efab04099f43878f")
@@ -73,5 +72,32 @@ class GiftListServiceTest {
         // Arrange
         assertNotNull(giftLists);
         assertEquals(result.get().getId(), giftLists.getId());
+    }
+
+    @Test
+    void shouldCreateGiftList() {
+        // Arrange
+        GiftList newGiftList = new GiftList().giftList()
+                .id("6914b6d4efab04099f43878f")
+                .gifts(List.of(new Gift().gift().name("Truc")
+                                .price(23)
+                                .build(),
+                        new Gift().gift()
+                                .name("Machin")
+                                .price(23)
+                                .build()))
+                .name("Noel")
+                .build();
+
+        when(giftListRepository.save(newGiftList)).thenReturn(newGiftList);
+
+        // Act
+        GiftList result = giftListService.createGiftList(newGiftList);
+
+        // Arrange
+        assertNotNull(result);
+        assertEquals(newGiftList.getId(), result.getId());
+        assertEquals(newGiftList.getName(), result.getName());
+        assertEquals(newGiftList.getGifts().size(), result.getGifts().size());
     }
 }
