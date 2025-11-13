@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/giftlist")
@@ -17,11 +18,10 @@ public class GiftListController {
 
     @GetMapping
     public ResponseEntity<List<GiftList>> getAllGiftList() {
-        List<GiftList> giftLists = giftListService.getAllGiftList();
-        if (giftLists.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(giftListService.getAllGiftList());
+        return Optional.of(giftListService.getAllGiftList())
+                .filter(list -> !list.isEmpty())
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")
