@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,12 +41,12 @@ public class GiftListRepositoryTest extends AbstractMongoTest {
         GiftList savedList = giftListRepository.save(list);
 
         // Act
-        GiftList foundList = giftListRepository.findGiftListById(savedList.getId());
+        Optional<GiftList> foundList = giftListRepository.findGiftListById(savedList.getId());
 
         // Assert
         assertThat(foundList).isNotNull();
-        assertThat(foundList.getName()).isEqualTo("Anniversaire");
-        assertThat(foundList.getGifts()).hasSize(1);
+        assertThat(foundList.get().getName()).isEqualTo("Anniversaire");
+        assertThat(foundList.get().getGifts()).hasSize(1);
         assertThat(giftListRepository.count()).isEqualTo(1);
     }
 }

@@ -3,6 +3,7 @@ package org.example.giftlist.giftlist;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GiftListService {
@@ -17,7 +18,7 @@ public class GiftListService {
         return giftListRepository.findAll();
     }
 
-    public GiftList getGiftListById(String id) {
+    public Optional<GiftList> getGiftListById(String id) {
         return giftListRepository.findGiftListById(id);
     }
 

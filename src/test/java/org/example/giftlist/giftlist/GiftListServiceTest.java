@@ -10,7 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +26,6 @@ class GiftListServiceTest {
 
     @Autowired
     private GiftListService giftListService;
-
 
     @Test
     void shouldGetAllTheGiftLists() {
@@ -64,14 +65,13 @@ class GiftListServiceTest {
                                 .build()))
                 .name("Noel")
                 .build();
-        when(giftListRepository.findGiftListById("6914b6d4efab04099f43878f")).thenReturn(giftLists);
+        when(giftListRepository.findGiftListById("6914b6d4efab04099f43878f")).thenReturn(Optional.ofNullable(giftLists));
 
         // Act
-        GiftList result = giftListService.getGiftListById("6914b6d4efab04099f43878f");
+        Optional<GiftList> result = giftListService.getGiftListById("6914b6d4efab04099f43878f");
 
         // Arrange
-        assertEquals(result.getId(), giftLists.getId());
-
+        assertNotNull(giftLists);
+        assertEquals(result.get().getId(), giftLists.getId());
     }
-
 }

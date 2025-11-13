@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -89,7 +90,7 @@ public class GiftListControllerTest {
                 .gifts(List.of(gift1, gift2))
                 .build();
 
-        when(giftListService.getGiftListById(giftListId)).thenReturn(giftList);
+        when(giftListService.getGiftListById(giftListId)).thenReturn(Optional.ofNullable(giftList));
 
         // Act & Assert
         mockMvc.perform(get("/giftlist/{id}", giftListId).contentType(MediaType.APPLICATION_JSON))
@@ -101,5 +102,14 @@ public class GiftListControllerTest {
                 .andExpect(jsonPath("$.gifts[0].price").value(33))
                 .andExpect(jsonPath("$.gifts[1].name").value("Gift 2"))
                 .andExpect(jsonPath("$.gifts[1].price").value(21));
+    }
+
+    @Test
+    void shouldReturn404_whenIdDoesNotExist() throws Exception {
+        when(giftListService.getGiftListById("unknown")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/giftlist/unknown")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

@@ -26,6 +26,8 @@ public class GiftListController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GiftList> getGiftListById(@PathVariable String id) {
-        return ResponseEntity.ok(giftListService.getGiftListById(id));
+        return giftListService.getGiftListById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
