@@ -17,6 +17,10 @@ public class GiftListController {
 
     @GetMapping
     public ResponseEntity<List<GiftList>> getAllGiftList() {
+        List<GiftList> giftLists = giftListService.getAllGiftList();
+        if (giftLists.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(giftListService.getAllGiftList());
     }
 

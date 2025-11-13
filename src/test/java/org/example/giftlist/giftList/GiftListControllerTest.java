@@ -8,7 +8,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,6 +56,17 @@ public class GiftListControllerTest {
                 .andExpect(jsonPath("$[1].name").value("Anniv"))
                 .andExpect(jsonPath("$[1].gifts[0].name").value("Gift 1"))
                 .andExpect(jsonPath("$[1].gifts[0].price").value(33));
+    }
+
+    @Test
+    void shouldReturn404_whenNoGiftListFound() throws Exception {
+        // Arrange
+        when(giftListService.getAllGiftList()).thenReturn(Collections.emptyList());
+
+        // Act && Assert
+        mockMvc.perform(get("/giftlist")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
