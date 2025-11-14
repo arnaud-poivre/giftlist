@@ -16,8 +16,8 @@ public class Gift {
     private String name;
 
     @NotNull(message = "Le prix est obligatoire")
-    @Min(value = 1, message = "Le prix doit être positif")
-    private Integer price;
+    @Min(value = 0, message = "Le prix doit être positif")
+    private int price;
 
     public GiftBuilder gift() {
         return Gift.builder();
