@@ -150,4 +150,21 @@ public class GiftListControllerTest {
                 .andExpect(jsonPath("$.gifts.length()").value(2));
 
     }
+
+    @Test
+    void shouldNotCreateGiftList_whenNameIsMissing() throws Exception {
+
+        GiftList invalid = new GiftList().giftList()
+                .gifts(List.of(
+                        new Gift().gift().name("Test").price(10).build()
+                ))
+                .build();
+
+        mockMvc.perform(post("/giftlist")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalid)))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(jsonPath("$.name").value("Le nom est obligatoire"));
+    }
 }

@@ -34,7 +34,7 @@ public class GiftListController {
     }
 
     @PostMapping
-    public ResponseEntity<GiftList> createGiftList(@RequestBody GiftList giftList) {
+    public ResponseEntity<GiftList> createGiftList(@Valid @RequestBody GiftList giftList) {
         GiftList created = giftListService.createGiftList(giftList);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
