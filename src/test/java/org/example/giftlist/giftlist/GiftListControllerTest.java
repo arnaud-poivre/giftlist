@@ -4,24 +4,22 @@ import org.example.giftlist.gift.Gift;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -167,4 +165,28 @@ public class GiftListControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.name").value("Le nom est obligatoire"));
     }
+
+    @Test
+    void shouldUpdateGiftList() throws Exception {
+        // Arrange
+        GiftList updatedGiftList = new GiftList().giftList()
+                .id("123")
+                .name("Anniversaire")
+                .gifts(List.of(new Gift().gift().name("Nouveau cadeau").price(10).build()))
+                .build();
+
+        when(giftListService.updateGiftList(any(GiftList.class)))
+                .thenReturn(updatedGiftList);
+
+        // Act && Assert
+        mockMvc.perform(put("/giftlist")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedGiftList)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("123"))
+                .andExpect(jsonPath("$.name").value("Anniversaire"))
+                .andExpect(jsonPath("$.gifts[0].name").value("Nouveau cadeau"));
+    }
+
+
 }

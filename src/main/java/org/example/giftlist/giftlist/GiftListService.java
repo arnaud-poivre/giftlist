@@ -26,4 +26,19 @@ public class GiftListService {
         return giftListRepository.save(giftList);
     }
 
+    public GiftList updateGiftList(GiftList giftList) {
+        GiftList existing = getGiftListAndUpdateIt(giftList);
+        return giftListRepository.save(existing);
+    }
+
+    private GiftList getGiftListAndUpdateIt(GiftList giftList) {
+        GiftList existing = giftListRepository.findGiftListById(giftList.getId())
+                .orElseThrow(() -> new RuntimeException("GiftList not found"));
+
+        existing.setName(giftList.getName());
+        existing.setGifts(giftList.getGifts());
+        return existing;
+    }
+
+
 }

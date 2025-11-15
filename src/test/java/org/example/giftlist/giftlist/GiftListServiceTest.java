@@ -100,4 +100,36 @@ class GiftListServiceTest {
         assertEquals(newGiftList.getName(), result.getName());
         assertEquals(newGiftList.getGifts().size(), result.getGifts().size());
     }
+
+    @Test
+    void shouldUpdateGiftList_whenCorrectIdIsGiven() {
+
+        // Arrange
+        GiftList giftListFromDB = new GiftList().giftList()
+                .id("123")
+                .name("Liste de Noel")
+                .gifts(List.of(new Gift().gift().name("Truc").price(4).build(),
+                        new Gift().gift().name("Machin").price(6).build()))
+                .build();
+
+        GiftList giftListUpdated = new GiftList().giftList()
+                .id("123")
+                .name("Liste de cadeau")
+                .gifts(List.of(new Gift().gift().name("Nouveau").price(4).build()))
+                .build();
+
+        when(giftListRepository.findGiftListById("123")).thenReturn(Optional.ofNullable(giftListFromDB));
+        when(giftListRepository.save(giftListFromDB)).thenReturn(giftListUpdated);
+
+        // Act
+        GiftList result = giftListService.updateGiftList(giftListFromDB);
+
+        // Arrange
+        assertNotNull(result);
+        assertEquals(giftListUpdated.getId(), result.getId());
+        assertEquals(giftListUpdated.getName(), result.getName());
+        assertEquals(giftListUpdated.getGifts().size(), result.getGifts().size());
+        assertEquals(giftListUpdated.getGifts().get(0).getName(), result.getGifts().get(0).getName());
+        assertEquals(giftListUpdated.getGifts().get(0).getPrice(), result.getGifts().get(0).getPrice());
+    }
 }

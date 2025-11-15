@@ -21,7 +21,6 @@ import java.util.List;
 public class GiftList {
 
     @Id
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     @NotBlank(message = "Le nom est obligatoire")

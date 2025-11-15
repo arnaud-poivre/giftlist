@@ -2,6 +2,7 @@ package org.example.giftlist.giftlist;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,4 +40,9 @@ public class GiftListController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @PutMapping
+    public ResponseEntity<GiftList> updateGiftList(@RequestBody GiftList giftList) {
+        GiftList updatedGiftList = giftListService.updateGiftList(giftList);
+        return ResponseEntity.ok(updatedGiftList);
+    }
 }
