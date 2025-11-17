@@ -18,6 +18,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -169,17 +170,18 @@ public class GiftListControllerTest {
     @Test
     void shouldUpdateGiftList() throws Exception {
         // Arrange
+        String id = "123";
+
         GiftList updatedGiftList = new GiftList().giftList()
                 .id("123")
                 .name("Anniversaire")
                 .gifts(List.of(new Gift().gift().name("Nouveau cadeau").price(10).build()))
                 .build();
 
-        when(giftListService.updateGiftList(any(GiftList.class)))
-                .thenReturn(updatedGiftList);
+        when(giftListService.updateGiftList(anyString(), any(GiftList.class))).thenReturn(updatedGiftList);
 
         // Act && Assert
-        mockMvc.perform(put("/giftlist")
+        mockMvc.perform(put("/giftlist/123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedGiftList)))
                 .andExpect(status().isOk())

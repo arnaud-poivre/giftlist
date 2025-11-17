@@ -122,7 +122,7 @@ class GiftListServiceTest {
         when(giftListRepository.save(giftListFromDB)).thenReturn(giftListUpdated);
 
         // Act
-        GiftList result = giftListService.updateGiftList(giftListFromDB);
+        GiftList result = giftListService.updateGiftList("123",giftListFromDB);
 
         // Arrange
         assertNotNull(result);

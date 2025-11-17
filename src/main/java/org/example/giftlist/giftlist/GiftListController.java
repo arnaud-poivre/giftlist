@@ -40,9 +40,12 @@ public class GiftListController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PutMapping
-    public ResponseEntity<GiftList> updateGiftList(@RequestBody GiftList giftList) {
-        GiftList updatedGiftList = giftListService.updateGiftList(giftList);
-        return ResponseEntity.ok(updatedGiftList);
+    @PutMapping("/{id}")
+    public ResponseEntity<GiftList> updateGiftList(
+            @PathVariable String id,
+            @RequestBody GiftList giftList
+    ) {
+        GiftList updated = giftListService.updateGiftList(id, giftList);
+        return ResponseEntity.ok(updated);
     }
 }
