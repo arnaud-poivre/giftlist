@@ -64,7 +64,7 @@ class GiftListServiceTest {
                                 .build()))
                 .name("Noel")
                 .build();
-        when(giftListRepository.findGiftListById("6914b6d4efab04099f43878f")).thenReturn(Optional.ofNullable(giftLists));
+        when(giftListRepository.findById("6914b6d4efab04099f43878f")).thenReturn(Optional.ofNullable(giftLists));
 
         // Act
         Optional<GiftList> result = giftListService.getGiftListById("6914b6d4efab04099f43878f");
@@ -118,7 +118,7 @@ class GiftListServiceTest {
                 .gifts(List.of(new Gift().gift().name("Nouveau").price(4).build()))
                 .build();
 
-        when(giftListRepository.findGiftListById("123")).thenReturn(Optional.ofNullable(giftListFromDB));
+        when(giftListRepository.findById("123")).thenReturn(Optional.ofNullable(giftListFromDB));
         when(giftListRepository.save(giftListFromDB)).thenReturn(giftListUpdated);
 
         // Act

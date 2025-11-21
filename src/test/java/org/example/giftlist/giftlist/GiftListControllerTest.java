@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class GiftListControllerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -37,7 +39,7 @@ public class GiftListControllerTest {
     private GiftListService giftListService;
 
     @Test
-    public void shouldGetAllGiftLists() throws Exception {
+    void shouldGetAllGiftLists() throws Exception {
 
         // Arrange
         Gift gift = new Gift().gift()

@@ -19,7 +19,7 @@ public class GiftListService {
     }
 
     public Optional<GiftList> getGiftListById(String id) {
-        return giftListRepository.findGiftListById(id);
+        return giftListRepository.findById(id);
     }
 
     public GiftList createGiftList(GiftList giftList) {
@@ -32,7 +32,7 @@ public class GiftListService {
     }
 
     private GiftList getGiftListAndUpdate(String id, GiftList update) {
-        GiftList existing = giftListRepository.findGiftListById(id)
+        GiftList existing = giftListRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("GiftList not found"));
 
         if (update.getName() != null) {
@@ -42,6 +42,7 @@ public class GiftListService {
         if (update.getGifts() != null) {
             existing.setGifts(update.getGifts());
         }
+
         return existing;
     }
 }
